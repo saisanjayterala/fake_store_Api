@@ -1,6 +1,7 @@
 package dev.sanjay.services;
 
 import dev.sanjay.dtos.FakeStoreProductDto;
+import dev.sanjay.models.Category;
 import dev.sanjay.models.Product;
 import dev.sanjay.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,13 @@ import java.util.List;
 public class FakeStoreProductService implements ProductService {
     private final RestTemplate restTemplate;
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public FakeStoreProductService(RestTemplate restTemplate, ProductRepository productRepository) {
+    public FakeStoreProductService(RestTemplate restTemplate, ProductRepository productRepository, CategoryService categoryService) {
         this.restTemplate = restTemplate;
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -51,6 +54,10 @@ public class FakeStoreProductService implements ProductService {
         product.setDescription(fakeStoreProductDto.getDescription());
         product.setPrice(fakeStoreProductDto.getPrice());
         product.setImage(fakeStoreProductDto.getImage());
+
+        Category category = categoryService.getCategoryById(1L); 
+        product.setCategory(category);
+
         return product;
     }
 }
