@@ -1,6 +1,14 @@
 package dev.sanjay.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
@@ -49,3 +57,4 @@ public class Product {
         this.image = image;
     }
 }
+    
