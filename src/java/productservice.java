@@ -1,13 +1,12 @@
-package dev.sanjay.productservice_sst;
+package dev.sanjay;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootTest
-class ProductServiceApplicationTests {
+@SpringBootApplication
+public class ProductServiceApplication {
 
-    @Test
-    void contextLoads() {
+    public static void main(String[] args) {
+        SpringApplication.run(ProductServiceApplication.class, args);
     }
-
 }

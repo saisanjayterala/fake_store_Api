@@ -2,6 +2,7 @@ package dev.sanjay.services;
 
 import dev.sanjay.dtos.FakeStoreProductDto;
 import dev.sanjay.models.Product;
+import dev.sanjay.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,17 +13,20 @@ import java.util.List;
 @Service
 public class FakeStoreProductService implements ProductService {
     private final RestTemplate restTemplate;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public FakeStoreProductService(RestTemplate restTemplate) {
+    public FakeStoreProductService(RestTemplate restTemplate, ProductRepository productRepository) {
         this.restTemplate = restTemplate;
+        this.productRepository = productRepository;
     }
 
     @Override
     public Product getProductById(Long id) {
         try {
-            FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject("http://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
-            return convertFakeStoreProductDtoToProduct(fakeStoreProductDto);
+            Product product = productRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+            return product;
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch product", e);
         }
@@ -31,12 +35,7 @@ public class FakeStoreProductService implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         try {
-            FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForObject("http://fakestoreapi.com/products", FakeStoreProductDto[].class);
-            List<Product> products = new ArrayList<>();
-            for (FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos) {
-                products.add(convertFakeStoreProductDtoToProduct(fakeStoreProductDto));
-            }
-            return products;
+            return productRepository.findAll();
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch products", e);
         }
@@ -44,7 +43,7 @@ public class FakeStoreProductService implements ProductService {
 
     private Product convertFakeStoreProductDtoToProduct(FakeStoreProductDto fakeStoreProductDto) {
         if (fakeStoreProductDto == null) {
-            return null;                                                                                                                                                            
+            return null;
         }
         Product product = new Product();
         product.setId(fakeStoreProductDto.getId());

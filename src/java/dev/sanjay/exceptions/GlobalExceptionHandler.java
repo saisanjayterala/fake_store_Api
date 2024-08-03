@@ -19,6 +19,4 @@ public class GlobalExceptionHandler {
         dto.setMessage(ex.getMessage());
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
-
- 
 }
