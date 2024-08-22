@@ -13,6 +13,7 @@ This project is a Spring Boot application that serves as a backend service for m
 - [Built With](#built-with)
 - [Contributing](#contributing)
 - [License](#license)
+![image](https://github.com/user-attachments/assets/419fb530-9a15-4515-81f1-9706ded848c9)
 
 ## Getting Started
 
